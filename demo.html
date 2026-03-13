@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - PyBot License System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .demo-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .demo-section h3 {
+            color: #333;
+            margin-top: 0;
+        }
+        .code-block {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 4px;
+            border-left: 4px solid #6366f1;
+            font-family: 'Courier New', monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .btn {
+            background: #6366f1;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn:hover {
+            background: #5855eb;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: #e8f5e8;
+            border-radius: 4px;
+            border: 1px solid #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀 PyBot License System - Demo</h1>
+
+    <div class="demo-section">
+        <h3>📊 Como Usar o Sistema</h3>
+        <p>O sistema de licenciamento permite controlar o acesso ao PyBot através de keys válidas.</p>
+
+        <h4>1. Iniciar a API</h4>
+        <div class="code-block">
+cd license-system/api<br>
+npm start
+        </div>
+
+        <h4>2. Acessar o Dashboard</h4>
+        <div class="code-block">
+http://localhost:3001
+        </div>
+
+        <h4>3. Gerar uma Key</h4>
+        <div class="code-block">
+# Via terminal<br>
+node gerarKey.js ouro<br><br>
+# Via web: usar o dashboard
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h3>🔑 Teste Rápido de Validação</h3>
+        <p>Teste se uma key é válida:</p>
+
+        <input type="text" id="test-key" placeholder="Digite uma key (ex: PYBOT-XXXXXXX)" style="width: 300px; padding: 8px;">
+        <button class="btn" onclick="testKey()">Testar Key</button>
+
+        <div id="test-result" class="result" style="display: none;"></div>
+    </div>
+
+    <div class="demo-section">
+        <h3>📈 Ver Estatísticas</h3>
+        <button class="btn" onclick="showStats()">Carregar Estatísticas</button>
+        <div id="stats-result" class="result" style="display: none;"></div>
+    </div>
+
+    <div class="demo-section">
+        <h3>🎯 Próximos Passos</h3>
+        <ul>
+            <li>Configure o bot com uma key válida</li>
+            <li>Inicie o bot: <code>npm start</code></li>
+            <li>Monitore o uso através do dashboard</li>
+            <li>Renove keys quando necessário</li>
+        </ul>
+    </div>
+
+    <script>
+        async function testKey() {
+            const key = document.getElementById('test-key').value;
+            const resultDiv = document.getElementById('test-result');
+
+            if (!key) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '❌ Digite uma key para testar';
+                return;
+            }
+
+            try {
+                const response = await fetch('/validar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ key })
+                });
+
+                const result = await response.json();
+
+                resultDiv.style.display = 'block';
+                if (result.status) {
+                    resultDiv.innerHTML = `✅ Key válida!<br>📊 Plano: ${result.plano}<br>⏰ Expira em: ${result.expiraFormatado}`;
+                } else {
+                    resultDiv.innerHTML = `❌ ${result.msg}`;
+                }
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '❌ Erro ao conectar na API';
+            }
+        }
+
+        async function showStats() {
+            const resultDiv = document.getElementById('stats-result');
+
+            try {
+                const response = await fetch('/stats');
+                const stats = await response.json();
+
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = `
+                    <strong>Total de Keys:</strong> ${stats.total}<br>
+                    <strong>Keys Ativas:</strong> ${stats.ativas}<br>
+                    <strong>Keys Expiradas:</strong> ${stats.expiradas}<br>
+                    <strong>Keys Desativadas:</strong> ${stats.desativadas}<br><br>
+                    <strong>Por Plano:</strong><br>
+                    🥉 Bronze: ${stats.porPlano.bronze}<br>
+                    🥈 Prata: ${stats.porPlano.prata}<br>
+                    🥇 Ouro: ${stats.porPlano.ouro}
+                `;
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '❌ Erro ao carregar estatísticas';
+            }
+        }
+    </script>
+</body>
+</html>

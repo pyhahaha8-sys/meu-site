@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Do Py Dev</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="toast-container"></div>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                                <h1><span id="typing-text"></span></h1>
+            </div>
+            <div class="subtitle">Sistema Do Bot - Py Dev</div>
+            <label class="theme-switch" for="checkbox" id="themeswitch">
+                <input type="checkbox" id="checkbox">
+                <div class="slider round"></div>
+                <span class="name"></span>
+                <div class="back"></div>
+            </label>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="tab-btn active styled__button" data-tab="dashboard" onclick="changeTab('dashboard')">
+                <i class="fas fa-chart-line"></i> Dashboard
+            </button>
+            <button class="tab-btn styled__button" data-tab="gerar" onclick="changeTab('gerar')">
+                <i class="fas fa-plus-circle"></i> Gerar Key
+            </button>
+            <button class="tab-btn styled__button" data-tab="gerenciar" onclick="changeTab('gerenciar')">
+                <i class="fas fa-cogs"></i> Gerenciar Keys
+            </button>
+        </nav>
+
+        <main class="main-content">
+            <!-- Dashboard Tab -->
+            <div id="dashboard" class="tab-content active">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="total-keys">0</h3>
+                            <p>Total de Keys</p>
+                        </div>
+                    </div>
+                    <div class="stat-card active">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="active-keys">0</h3>
+                            <p>Keys Ativas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card expired">
+                        <div class="stat-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="expired-keys">0</h3>
+                            <p>Keys Expiradas</p>
+                        </div>
+                    </div>
+                    <div class="stat-card disabled">
+                        <div class="stat-icon">
+                            <i class="fas fa-ban"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="disabled-keys">0</h3>
+                            <p>Keys Desativadas</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="plans-chart">
+                    <h3><i class="fas fa-chart-pie"></i> Distribuição por Plano</h3>
+                    <div class="plan-stats">
+                        <div class="plan-stat">
+                            <span class="plan-name bronze">Bronze</span>
+                            <span class="plan-count" id="bronze-count">0</span>
+                        </div>
+                        <div class="plan-stat">
+                            <span class="plan-name prata">Prata</span>
+                            <span class="plan-count" id="prata-count">0</span>
+                        </div>
+                        <div class="plan-stat">
+                            <span class="plan-name ouro">Ouro</span>
+                            <span class="plan-count" id="ouro-count">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gerar Key Tab -->
+            <div id="gerar" class="tab-content">
+                <div class="form-container">
+                    <h2><i class="fas fa-key"></i> Gerar Nova Key de Licença</h2>
+                    <form id="generate-form" class="license-form">
+                        <div class="input__container" data-label="ADMIN KEY">
+                            <div class="shadow__input"></div>
+                            <button type="button" class="input__button__shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" width="20px" height="20px">
+                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                                </svg>
+                            </button>
+                            <input type="password" id="admin-key" name="admin-key" class="input__search" placeholder="Digite a chave admin" required>
+                        </div>
+
+                        <div class="input__container" data-label="PLANO">
+                            <div class="shadow__input"></div>
+                            <button type="button" class="input__button__shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" width="20px" height="20px">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                </svg>
+                            </button>
+                            <select id="plan-select" name="plan-select" class="input__search" required>
+                                <option value="">Escolha um plano...</option>
+                                <option value="bronze">🥉 Bronze</option>
+                                <option value="prata">🥈 Prata</option>
+                                <option value="ouro">🥇 Ouro</option>
+                            </select>
+                        </div>
+
+                        <div class="input__container" data-label="DIAS">
+                            <div class="shadow__input"></div>
+                            <button type="button" class="input__button__shadow">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffffff" width="20px" height="20px">
+                                    <path d="M0 0h24v24H0z" fill="none"></path>
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                                </svg>
+                            </button>
+                            <input type="number" id="days-input" name="days-input" class="input__search" min="1" max="365" placeholder="Dias do plano" required>
+                        </div>
+                        <button type="submit" class="btn-primary styled__button">
+                            <i class="fas fa-magic"></i> Gerar Key
+                        </button>
+                    </form>
+
+                    <div id="generate-result" class="result-message" style="display: none;">
+                        <div class="result-content">
+                            <h3>✅ Key Gerada com Sucesso!</h3>
+                            <div class="key-display">
+                                <strong>Key:</strong> <span id="generated-key"></span>
+                            </div>
+                            <div class="key-info">
+                                <span><strong>Plano:</strong> <span id="generated-plan"></span></span>
+                                <span><strong>Expira em:</strong> <span id="generated-expiry"></span></span>
+                            </div>
+                            <button type="button" onclick="copyToClipboard()" class="btn-secondary styled__button">
+                                <i class="fas fa-copy"></i> Copiar Key
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gerenciar Keys Tab -->
+            <div id="gerenciar" class="tab-content">
+                <div class="keys-container">
+                    <div class="keys-header">
+                        <h2><i class="fas fa-list"></i> Todas as Keys</h2>
+                        <button type="button" onclick="loadKeys()" class="btn-refresh styled__button">
+                            <i class="fas fa-sync-alt"></i> Atualizar
+                        </button>
+                    </div>
+
+                    <div id="keys-list" class="keys-list">
+                        <!-- Keys serão carregadas aqui -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal para ações -->
+    <div id="action-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Ação</h3>
+                <span class="modal-close" onclick="closeModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="action-form">
+                    <input type="hidden" id="action-key">
+                    <div class="form-group">
+                        <label for="modal-admin-key">Chave de Administrador:</label>
+                        <input type="password" id="modal-admin-key" placeholder="Digite a chave admin" required>
+                    </div>
+                    <div id="renewal-days" class="form-group" style="display: none;">
+                        <label for="days-input">Dias para renovar:</label>
+                        <input type="number" id="days-input" min="1" max="365" placeholder="30">
+                    </div>
+                    <button type="submit" class="btn-primary styled__button">
+                        <i class="fas fa-check"></i> Confirmar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</div>
+<footer style="text-align:center; padding:16px 0; color:#6b7280; font-size:14px; background:transparent;">
+    © 2026 Py Modz. Todos os direitos reservados.
+</footer>
+</body>
+</html>
