@@ -1,0 +1,10 @@
+{
+  "license": {
+    "key": "PYBOT-Y1B6V2M7",
+    "api_url": "http://localhost:3001"
+  },
+  "bot": {
+    "name": "PyBot",
+    "version": "7.0"
+  }
+}
